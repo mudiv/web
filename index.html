@@ -34,20 +34,13 @@
 </head>
   
 <body>
+  <script src="flutter.js"></script>
   <script>
-    {{flutter_js}} // ignore the errors. Do not add any quotes ("" or '')
-    {{flutter_build_config}} // ignore the errors. Do not add any quotes ("" or '')
-
-    window.addEventListener('load', function () {
-        let loading = document.querySelector('#loading-indicator');
-        _flutter.loader.load({
-            onEntrypointLoaded: async function (engineInitializer) {
-                const appRunner = await engineInitializer.initializeEngine({renderer: 'html'}); // {renderer: 'html'} can be completely removed or replaced by 'canvaskit'
-                await appRunner.runApp();
-                loading.remove(); // Removing the native loading indicator after loading the Flutter app.
-            }
-        });
+    _flutter.loader.loadEntrypoint().then(function(engineInitializer) {
+      return engineInitializer.initializeEngine().then(function(appRunner) {
+        return appRunner.runApp();
+      });
     });
-</script>
+  </script>
 </body>
 </html>
